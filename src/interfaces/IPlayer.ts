@@ -1,4 +1,3 @@
-export default interface IPlayer {
-    id:number,
-    name:string
-}
+import IEntity from './IEntity';
+
+export default interface IPlayer extends IEntity { }
