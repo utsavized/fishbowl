@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import Game from '../classes/Game';
-import GenericLocalStorageRepository from '../classes/GenericLocalStorageRepository';
+import Game from '../models/Game';
+import Category from '../models/Category';
+import GenericLocalStorageRepository from '../data/GenericLocalStorageRepository';
 import ILocalStorageRepository from '../interfaces/ILocalStorageRepository'; 
 
 export default class CreateGame extends React.Component<{}, Game> {
   private _gameRepository: ILocalStorageRepository<Game>; 
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this._gameRepository = new GenericLocalStorageRepository<Game>();
     this.state = {
-      id: '',
+      id: 0,
       name: '',
-      player: { id: '', name: '' },
+      player: { id: 0, name: '' },
       categories: []
     };
 
@@ -21,7 +22,7 @@ export default class CreateGame extends React.Component<{}, Game> {
     this.createGame = this.createGame.bind(this);
   }
   
-  updateUser(e: any) {
+  updateUser(e: any) { // tslint:disable-line
     this.state.player.name = e.target.value;
     this.setState({
       player: this.state.player,
@@ -29,9 +30,9 @@ export default class CreateGame extends React.Component<{}, Game> {
     });
   }
 
-  addCategory(e: any) {
+  addCategory(e: any) { // tslint:disable-line
     if (e.which === 13) {
-      this.state.categories.push({ name: e.target.value });
+      this.state.categories.push(new Category(0, e.target.value));
       this.setState({
         player: this.state.player,
         categories: this.state.categories
@@ -44,7 +45,7 @@ export default class CreateGame extends React.Component<{}, Game> {
     // TODO: connect to backend
     // receive game guid
     const gameGuid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    const game = new Game(this.state.player, this.state.categories, gameGuid, 'Fish Bowl');
+    const game = new Game(0, gameGuid, this.state.player, this.state.categories);
     this._gameRepository.add(gameGuid, game);
     const url = '/play/' + gameGuid;
     history.pushState(null, 'Play', url);

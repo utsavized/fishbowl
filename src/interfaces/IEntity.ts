@@ -1,4 +1,4 @@
 export default interface IEntity {
-    id: string,
+    id: number,
     name: string
 }
