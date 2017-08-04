@@ -13,8 +13,10 @@ export default class CreateGame extends React.Component<{}, Game> {
     this.state = {
       id: 0,
       name: '',
-      player: { id: 0, name: '' },
-      categories: []
+      creator: { id: 0, name: '' },
+      categories: [],
+      players: [],
+      started: false
     };
 
     this.updateUser = this.updateUser.bind(this);
@@ -23,20 +25,14 @@ export default class CreateGame extends React.Component<{}, Game> {
   }
   
   updateUser(e: any) { // tslint:disable-line
-    this.state.player.name = e.target.value;
-    this.setState({
-      player: this.state.player,
-      categories: this.state.categories
-    });
+    this.state.creator.name = e.target.value;
+    this.setState(this.state);
   }
 
   addCategory(e: any) { // tslint:disable-line
     if (e.which === 13) {
       this.state.categories.push(new Category(0, e.target.value));
-      this.setState({
-        player: this.state.player,
-        categories: this.state.categories
-      });
+      this.setState(this.state);
       e.target.value = '';
     }
   }
@@ -45,22 +41,22 @@ export default class CreateGame extends React.Component<{}, Game> {
     // TODO: connect to backend
     // receive game guid
     const gameGuid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    const game = new Game(0, gameGuid, this.state.player, this.state.categories);
+    const game = new Game(0, gameGuid, this.state.creator, this.state.categories, [this.state.creator], false);
     this._gameRepository.add(gameGuid, game);
-    const url = '/play/' + gameGuid;
-    history.pushState(null, 'Play', url);
+    const url = '/wait/' + gameGuid + '/user/' + this.state.creator.name;
+    history.pushState(null, 'Wait', url);
     this.setState(game);
   }
 
   render() {
-    if (this.state.id) {
-      const url = '/play/' + this.state.id;
+    if (this.state.name) {
+      const url = '/wait/' + this.state.name + '/user/' + this.state.creator.name;
       return <Redirect to={url} />;
     }
 
     return (
       <div>
-          <p>User: {this.state.player.name}</p>
+          <p>User: {this.state.creator.name}</p>
           Categories:
           <ul>
             {this.state.categories.map(category =>
@@ -68,7 +64,7 @@ export default class CreateGame extends React.Component<{}, Game> {
             )}
           </ul>
           Enter username
-          <input type="text" onChange={this.updateUser} value={this.state.player.name}/>
+          <input type="text" onChange={this.updateUser} value={this.state.creator.name}/>
           <br />
           Enter Category <input id="category--input" type="text" onKeyPress={this.addCategory}/>
           <br />
