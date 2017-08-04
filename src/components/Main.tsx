@@ -9,13 +9,15 @@ import Home from './Home';
 export default class Main extends React.Component {
     render() {
         return (
-            <Switch>
-              <Route exact={true} path="/" component={Home}/>
-              <Route exact={true} path="/create" component={CreateGame}/>
-              <Route path="/wait/:guid/user/:user" component={WaitGame}/>
-              <Route path="/join/:guid" component={JoinGame}/>
-              <Route path="/play/:guid" component={PlayGame}/>
-            </Switch>
+            <div className="container row">
+                <Switch>
+                <Route exact={true} path="/" component={Home}/>
+                <Route exact={true} path="/create" component={CreateGame}/>
+                <Route path="/wait/:guid/user/:user" component={WaitGame}/>
+                <Route path="/join/:guid" component={JoinGame}/>
+                <Route path="/play/:guid" component={PlayGame}/>
+                </Switch>
+            </div>
         );
     }
 }
