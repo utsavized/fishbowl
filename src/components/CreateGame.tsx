@@ -16,6 +16,7 @@ export default class CreateGame extends React.Component<{}, Game> {
       creator: { id: 0, name: '' },
       categories: [],
       players: [],
+      slips: [],
       started: false
     };
 
@@ -41,16 +42,16 @@ export default class CreateGame extends React.Component<{}, Game> {
     // TODO: connect to backend
     // receive game guid
     const gameGuid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    const game = new Game(0, gameGuid, this.state.creator, this.state.categories, [this.state.creator], false);
+    const game = new Game(0, gameGuid, this.state.creator, this.state.categories, [this.state.creator], [], false);
     this._gameRepository.add(gameGuid, game);
-    const url = '/wait/' + gameGuid + '/user/' + this.state.creator.name;
-    history.pushState(null, 'Wait', url);
+    const url = '/slips/' + gameGuid + '/user/' + this.state.creator.name;
+    history.pushState(null, 'Slips', url);
     this.setState(game);
   }
 
   render() {
     if (this.state.name) {
-      const url = '/wait/' + this.state.name + '/user/' + this.state.creator.name;
+      const url = '/slips/' + this.state.name + '/user/' + this.state.creator.name;
       return <Redirect to={url} />;
     }
 

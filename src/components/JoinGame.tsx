@@ -37,8 +37,8 @@ export default class JoinGame extends React.Component<RouteComponentProps<any>, 
       this._game.players.push(this.state.player);
       this._gameRepository.remove(this._game.name);
       this._gameRepository.add(this._game.name, this._game);
-      const url = '/wait/' + this._game.name + '/user/' + this.state.player.name;
-      history.pushState(null, 'Wait', url);
+      const url = '/slips/' + this._game.name + '/user/' + this.state.player.name;
+      history.pushState(null, 'Slips', url);
       this.setState({
         player: this.state.player,
         attempt: { success: true }
@@ -66,7 +66,7 @@ export default class JoinGame extends React.Component<RouteComponentProps<any>, 
     }
 
     if (this.state.attempt !== undefined && this.state.attempt.success) {
-      const url = '/wait/' + this._game.name  + '/user/' + this.state.player.name;
+      const url = '/slips/' + this._game.name  + '/user/' + this.state.player.name;
       return <Redirect to={url} />;
     }
 

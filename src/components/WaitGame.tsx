@@ -47,10 +47,6 @@ export default class WaitGame extends React.Component<RouteComponentProps<any>, 
     return (
       <div>
           <p>Playing {this.state.name}</p>
-          Categories:
-          <ul>
-          {this.state.categories.map(category => <li key={category.name}>{category.name} </li>)}
-          </ul>
           Joined players:
           <ul>
             {this.state.players.map(player => <li key={player.name}>{player.name} </li>)}
